@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import ru.neoflex.Conveyor.controllers.api.ConveyorAPI;
 import ru.neoflex.Conveyor.dto.LoanApplicationRequestDTO;
 import ru.neoflex.Conveyor.dto.LoanOfferDTO;
 
@@ -20,10 +21,18 @@ import java.util.Random;
 @RestController
 @RequestMapping("/conveyor")
 @Slf4j
-public class ConveyorController {
+public class ConveyorController implements ConveyorAPI {
+    @Override
     @PostMapping("/offers")
-    public List<LoanOfferDTO> offer(@RequestBody @Valid LoanApplicationRequestDTO applicationRequestDTO,
+    public List<LoanOfferDTO> offer (@RequestBody @Valid LoanApplicationRequestDTO applicationRequestDTO,
                                     BindingResult bindingResult) {
+
+        validateRequest(bindingResult);
+
+        return prepareResponse(applicationRequestDTO, bindingResult);
+    }
+
+    private void validateRequest(BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
@@ -31,23 +40,58 @@ public class ConveyorController {
                 log.error(error.getField() + " - " + error.getDefaultMessage() + ";");
             }
             throw new IllegalArgumentException();
-
         }
+    }
+
+    private List<LoanOfferDTO> prepareResponse(LoanApplicationRequestDTO applicationRequestDTO, BindingResult bindingResult) {
+
         log.info("Application request{}", applicationRequestDTO);
         Random random = new Random();
 
         List<LoanOfferDTO> loanOfferDTOS = new ArrayList<>();
-        loanOfferDTOS.add(new LoanOfferDTO(random.nextLong(1, 10000), 1000530L, 11636000L, 7,
-                BigDecimal.valueOf(1123), BigDecimal.valueOf(3456), false, false));
+        loanOfferDTOS.add(LoanOfferDTO.builder().
+                applicationId(random.nextLong(0,10000)).
+                requestAmount(5246267L).
+                totalAmount(5547367L).
+                term(19).
+                monthlyPayment(BigDecimal.valueOf(1122623)).
+                rate(BigDecimal.valueOf(11263576)).
+                isInsuranceEnabled(false).
+                isSalaryClient(false).
+                build());
 
-        loanOfferDTOS.add(new LoanOfferDTO(random.nextLong(1, 10000), 10042500L, 12321000L, 23,
-                BigDecimal.valueOf(11235672), BigDecimal.valueOf(341556), false, true));
+        loanOfferDTOS.add(LoanOfferDTO.builder().
+                applicationId(random.nextLong(0,10000)).
+                requestAmount(525778567L).
+                totalAmount(55476367L).
+                term(14).
+                monthlyPayment(BigDecimal.valueOf(112524523)).
+                rate(BigDecimal.valueOf(1162456576)).
+                isInsuranceEnabled(false).
+                isSalaryClient(true).
+                build());
 
-        loanOfferDTOS.add(new LoanOfferDTO(random.nextLong(0, 10000), 10000L, 11000L, 7,
-                BigDecimal.valueOf(1122623), BigDecimal.valueOf(37467456), true, false));
+        loanOfferDTOS.add(LoanOfferDTO.builder().
+                applicationId(random.nextLong(0,10000)).
+                requestAmount(52526567L).
+                totalAmount(736573737L).
+                term(34).
+                monthlyPayment(BigDecimal.valueOf(11265623)).
+                rate(BigDecimal.valueOf(114145626)).
+                isInsuranceEnabled(true).
+                isSalaryClient(false).
+                build());
 
-        loanOfferDTOS.add(new LoanOfferDTO(random.nextLong(0, 10000), 10005530L, 11123000L, 7,
-                BigDecimal.valueOf(1141523), BigDecimal.valueOf(3441456), true, true));
+        loanOfferDTOS.add(LoanOfferDTO.builder().
+                applicationId(random.nextLong(0,10000)).
+                requestAmount(1325778567L).
+                totalAmount(4565476367L).
+                term(14).
+                monthlyPayment(BigDecimal.valueOf(1232524523)).
+                rate(BigDecimal.valueOf(625656576)).
+                isInsuranceEnabled(true).
+                isSalaryClient(true).
+                build());
 
         return loanOfferDTOS;
     }

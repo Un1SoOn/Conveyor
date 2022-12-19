@@ -1,6 +1,6 @@
 package ru.neoflex.Conveyor.controllers;
 
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -9,21 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import ru.neoflex.Conveyor.controllers.api.ConveyorAPI;
 import ru.neoflex.Conveyor.dto.LoanApplicationRequestDTO;
 import ru.neoflex.Conveyor.dto.LoanOfferDTO;
-import ru.neoflex.Conveyor.services.ConveyorService;
+import ru.neoflex.Conveyor.services.algorithm.api.ConveyorService;
 
 import java.util.List;
 
+/** Отправка всевозможных кредитных предложений по запросу*/
 @RestController
 @RequestMapping("/conveyor")
 @Slf4j
+@RequiredArgsConstructor
 public class ConveyorController implements ConveyorAPI {
-
-    private ConveyorService conveyorService;
-
-    @Autowired
-    public ConveyorController(ConveyorService conveyorService) {
-        this.conveyorService = conveyorService;
-    }
+    private final ConveyorService conveyorServiceImpl;
 
     @Override
     @PostMapping("/offers")
@@ -50,6 +46,6 @@ public class ConveyorController implements ConveyorAPI {
 
         log.info("Application request{}", applicationRequestDTO);
 
-        return conveyorService.prepareResponse(applicationRequestDTO, bindingResult);
+        return conveyorServiceImpl.getAllOffers(applicationRequestDTO, bindingResult);
     }
 }

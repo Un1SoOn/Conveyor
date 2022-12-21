@@ -7,7 +7,9 @@ import ru.neoflex.Conveyor.dto.LoanApplicationRequestDTO;
 import ru.neoflex.Conveyor.dto.LoanOfferDTO;
 import ru.neoflex.Conveyor.services.algorithm.api.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса по рассчету кредитных предложений
@@ -15,20 +17,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConveyorServiceImpl implements ConveyorService {
-    /***/
-    private final AlgorithmNotInsureNotSalary algorithmNotInsureNotSalary;
-    private final AlgorithmNotInsureSalary algorithmNotInsureSalary;
-    private final AlgorithmInsureNotSalary algorithmInsureNotSalary;
-    private final AlgorithmInsureSalary algorithmInsureSalary;
+    /**Список, содержащий расчеты четырех предложений*/
+    private final List<Algorithm> algorithmList;
 
     public List<LoanOfferDTO> getAllOffers(LoanApplicationRequestDTO applicationRequestDTO,
                                            BindingResult bindingResult) {
-        LoanOfferDTO loanOfferDTOFirst = algorithmNotInsureNotSalary.calcOffer(applicationRequestDTO);
 
-        LoanOfferDTO loanOfferDTOSecond = algorithmNotInsureSalary.calcOffer(applicationRequestDTO);
-        LoanOfferDTO loanOfferDTOThird = algorithmInsureNotSalary.calcOffer(applicationRequestDTO);
-        LoanOfferDTO loanOfferDTOFourth = algorithmInsureSalary.calcOffer(applicationRequestDTO);
-
-        return List.of(loanOfferDTOFirst, loanOfferDTOSecond, loanOfferDTOThird, loanOfferDTOFourth);
+        return algorithmList.stream().map(algorithm -> algorithm.calcOffer(applicationRequestDTO)).sorted(new Comparator<LoanOfferDTO>() {
+            @Override
+            public int compare(LoanOfferDTO o1, LoanOfferDTO o2) {
+                return Double.compare(o1.getRate().doubleValue(), o2.getRate().doubleValue());
+            }
+        }).collect(Collectors.toList());
     }
 }

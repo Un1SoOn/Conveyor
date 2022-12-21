@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.neoflex.Conveyor.dto.LoanApplicationRequestDTO;
 import ru.neoflex.Conveyor.dto.LoanOfferDTO;
-import ru.neoflex.Conveyor.services.algorithm.api.AlgorithmNotInsureSalary;
+import ru.neoflex.Conveyor.services.algorithm.api.Algorithm;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 /** Логика расчета предложения при отсутствии страховки и отсутствии клиентства в банке*/
 @Service
-public class AlgorithmNotInsureSalaryImpl implements AlgorithmNotInsureSalary {
+public class AlgorithmNotInsureSalaryImpl implements Algorithm {
     private final Random random = new Random();
     private static final long APPLICATION_ID_MAX = 10000L;
     /** Годовая ставка клиента по умолчанию*/

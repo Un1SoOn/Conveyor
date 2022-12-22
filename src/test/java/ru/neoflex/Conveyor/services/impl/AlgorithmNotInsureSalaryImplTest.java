@@ -1,5 +1,6 @@
 package ru.neoflex.Conveyor.services.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,81 +13,53 @@ import java.time.LocalDate;
 
 @SpringBootTest
 public class AlgorithmNotInsureSalaryImplTest {
-    private final AlgorithmNotInsureSalaryImpl algorithmNotInsureSalary;
 
+    /** Тестируемый сервис расчета кредитного предолжения при отсутствии страховки и наличии клиентства в банке*/
     @Autowired
-    public AlgorithmNotInsureSalaryImplTest(AlgorithmNotInsureSalaryImpl algorithmNotInsureSalary) {
-        this.algorithmNotInsureSalary = algorithmNotInsureSalary;
-    }
+    private final AlgorithmNotInsureSalaryImpl algorithmNotInsureSalary = new AlgorithmNotInsureSalaryImpl();
+
+    /** Данные предполагаемого клиента, оформляющего кредит */
+    LoanApplicationRequestDTO loanApplicationRequestDTO = LoanApplicationRequestDTO.
+            builder().
+            amount(150000L).
+            term(12).
+            firstName("Ivan").
+            lastName("Mikhalev").
+            middleName("Igorevich").
+            email("PinMII@yandex.ru").
+            birthdate(LocalDate.ofEpochDay(1990-01-01)).
+            passportSeries("6578").
+            passportNumber("638586").
+            build();
 
     @Test
+    @DisplayName("Тестирование предложение на null")
     public void offerShouldBeNotNull() {
-        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(LoanApplicationRequestDTO.
-                builder().
-                amount(150000L).
-                term(12).
-                firstName("Ivan").
-                lastName("Mikhalev").
-                middleName("Igorevich").
-                email("PinMII@yandex.ru").
-                birthdate(LocalDate.ofEpochDay(1990-01-01)).
-                passportSeries("6578").
-                passportNumber("638586").
-                build());
+        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(loanApplicationRequestDTO);
 
         Assert.notNull(loanOfferDTO, "Offer is null");
     }
 
     @Test
+    @DisplayName("Тестирование результата расчета итоговой ставки")
     public void checkRate() {
-        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(LoanApplicationRequestDTO.
-                builder().
-                amount(150000L).
-                term(12).
-                firstName("Ivan").
-                lastName("Mikhalev").
-                middleName("Igorevich").
-                email("PinMII@yandex.ru").
-                birthdate(LocalDate.ofEpochDay(1990-01-01)).
-                passportSeries("6578").
-                passportNumber("638586").
-                build());
+        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(loanApplicationRequestDTO);
 
         Assert.isTrue(loanOfferDTO.getRate().doubleValue() == 0.28, "Rate is not correct");
     }
 
     @Test
+    @DisplayName("Тестирование предложения на отсутствие страховки у оформляющего кредит")
     public void checkInsurance() {
-        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(LoanApplicationRequestDTO.
-                builder().
-                amount(150000L).
-                term(12).
-                firstName("Ivan").
-                lastName("Mikhalev").
-                middleName("Igorevich").
-                email("PinMII@yandex.ru").
-                birthdate(LocalDate.ofEpochDay(1990-01-01)).
-                passportSeries("6578").
-                passportNumber("638586").
-                build());
+        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(loanApplicationRequestDTO);
 
         Assert.isTrue(!loanOfferDTO.getIsInsuranceEnabled(), "IsInsuranceEnabled should be false");
     }
 
     @Test
+    @DisplayName("Тестирование предложение на наличие клиентства в банке у оформляющего кредит")
     public void checkSalaryClient() {
-        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(LoanApplicationRequestDTO.
-                builder().
-                amount(150000L).
-                term(12).
-                firstName("Ivan").
-                lastName("Mikhalev").
-                middleName("Igorevich").
-                email("PinMII@yandex.ru").
-                birthdate(LocalDate.ofEpochDay(1990-01-01)).
-                passportSeries("6578").
-                passportNumber("638586").
-                build());
+        LoanOfferDTO loanOfferDTO = algorithmNotInsureSalary.calcOffer(loanApplicationRequestDTO);
 
         Assert.isTrue(loanOfferDTO.getIsSalaryClient(), "IsSalaryClient should be true");
     }

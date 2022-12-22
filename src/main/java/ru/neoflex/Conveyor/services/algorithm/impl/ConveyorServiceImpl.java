@@ -26,7 +26,7 @@ public class ConveyorServiceImpl implements ConveyorService {
         return algorithmList.stream().map(algorithm -> algorithm.calcOffer(applicationRequestDTO)).sorted(new Comparator<LoanOfferDTO>() {
             @Override
             public int compare(LoanOfferDTO o1, LoanOfferDTO o2) {
-                return Double.compare(o1.getRate().doubleValue(), o2.getRate().doubleValue());
+                return Double.compare(o2.getRate().doubleValue(), o1.getRate().doubleValue());
             }
         }).collect(Collectors.toList());
     }

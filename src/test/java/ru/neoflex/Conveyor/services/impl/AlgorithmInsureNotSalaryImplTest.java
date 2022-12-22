@@ -11,11 +11,11 @@ import ru.neoflex.Conveyor.services.algorithm.impl.AlgorithmInsureNotSalaryImpl;
 import java.time.LocalDate;
 
 @SpringBootTest
-public class AlgorithmInsureNotSalaryTest {
+public class AlgorithmInsureNotSalaryImplTest {
     private final AlgorithmInsureNotSalaryImpl algorithmInsureNotSalary;
 
     @Autowired
-    public AlgorithmInsureNotSalaryTest(AlgorithmInsureNotSalaryImpl algorithmInsureNotSalary) {
+    public AlgorithmInsureNotSalaryImplTest(AlgorithmInsureNotSalaryImpl algorithmInsureNotSalary) {
         this.algorithmInsureNotSalary = algorithmInsureNotSalary;
     }
 

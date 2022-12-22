@@ -3,7 +3,6 @@ package ru.neoflex.Conveyor.services.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.util.Assert;
 import ru.neoflex.Conveyor.dto.LoanApplicationRequestDTO;
 import ru.neoflex.Conveyor.dto.LoanOfferDTO;
@@ -12,11 +11,11 @@ import ru.neoflex.Conveyor.services.algorithm.impl.AlgorithmNotInsureNotSalaryIm
 import java.time.LocalDate;
 
 @SpringBootTest
-public class AlgorithmNotInsureNotSalaryTest {
+public class AlgorithmNotInsureNotSalaryImplTest {
     private final AlgorithmNotInsureNotSalaryImpl algorithmNotInsureNotSalary;
 
     @Autowired
-    public AlgorithmNotInsureNotSalaryTest(AlgorithmNotInsureNotSalaryImpl algorithmNotInsureNotSalary) {
+    public AlgorithmNotInsureNotSalaryImplTest(AlgorithmNotInsureNotSalaryImpl algorithmNotInsureNotSalary) {
         this.algorithmNotInsureNotSalary = algorithmNotInsureNotSalary;
     }
 

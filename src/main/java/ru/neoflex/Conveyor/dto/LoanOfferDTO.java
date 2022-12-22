@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanOfferDTO implements Comparable<LoanOfferDTO> {
+public class LoanOfferDTO {
     /** Идентификатор*/
     private Long applicationId;
     /** Сумма из LoanApplicationRequestDTO(amount), запрошенная клиентом*/
@@ -32,14 +32,4 @@ public class LoanOfferDTO implements Comparable<LoanOfferDTO> {
     private Boolean isInsuranceEnabled;
     /** Является зарплатным клиентом банка - true, не является - false*/
     private Boolean isSalaryClient;
-
-    @Override
-    public int compareTo(LoanOfferDTO o) {
-        if(this.getRate().doubleValue() > o.getRate().doubleValue())
-            return 1;
-        else if (this.getRate().doubleValue() < o.getRate().doubleValue())
-            return -1;
-        else
-            return 0;
-    }
 }

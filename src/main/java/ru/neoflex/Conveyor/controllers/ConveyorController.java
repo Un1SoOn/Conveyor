@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.neoflex.Conveyor.controllers.api.ConveyorAPI;
 import ru.neoflex.Conveyor.dto.LoanApplicationRequestDTO;
 import ru.neoflex.Conveyor.dto.LoanOfferDTO;
+import ru.neoflex.Conveyor.dto.OnlineOfferResponseDTO;
 import ru.neoflex.Conveyor.services.algorithm.api.ConveyorService;
+import ru.neoflex.Conveyor.services.algorithm.api.OnlineOfferService;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConveyorController implements ConveyorAPI {
     private final ConveyorService conveyorServiceImpl;
+    private final OnlineOfferService onlineOfferServiceImpl;
 
     @Override
     @PostMapping("/offers")
@@ -28,6 +31,14 @@ public class ConveyorController implements ConveyorAPI {
         validateRequest(bindingResult);
 
         return prepareResponse(applicationRequestDTO, bindingResult);
+    }
+
+    @Override
+    @PostMapping("/online-offer")
+    public LoanOfferDTO onlineOffer() {
+        LoanOfferDTO loanOfferDTO =  onlineOfferServiceImpl.remappingOffer();
+        log.info("Loan offer: {}", loanOfferDTO);
+        return loanOfferDTO;
     }
 
     private void validateRequest(BindingResult bindingResult) {
@@ -43,7 +54,7 @@ public class ConveyorController implements ConveyorAPI {
 
     private List<LoanOfferDTO> prepareResponse(LoanApplicationRequestDTO applicationRequestDTO, BindingResult bindingResult) {
 
-        log.info("Application request{}", applicationRequestDTO);
+        log.info("Application request: {}", applicationRequestDTO);
 
         return conveyorServiceImpl.getAllOffers(applicationRequestDTO, bindingResult);
     }

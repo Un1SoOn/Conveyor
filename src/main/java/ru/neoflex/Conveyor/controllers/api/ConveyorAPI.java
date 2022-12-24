@@ -13,7 +13,10 @@ import java.util.List;
 @RequestMapping("/conveyor")
 public interface ConveyorAPI {
     @PostMapping("/offers")
-    public List<LoanOfferDTO> offer(@RequestBody @Valid LoanApplicationRequestDTO applicationRequestDTO,
+    List<LoanOfferDTO> offer(@RequestBody @Valid LoanApplicationRequestDTO applicationRequestDTO,
                                     BindingResult bindingResult);
 
+
+    @PostMapping("/online-offer")
+    LoanOfferDTO onlineOffer();
 }

@@ -1,5 +1,6 @@
 package ru.neoflex.Conveyor.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,9 +28,12 @@ public class LoanOfferDTO {
     /** Ежемесячный платеж*/
     private BigDecimal monthlyPayment;
     /** Годовая ставка клиента*/
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BigDecimal rate;
     /** Если страховка имеется - true, не имеется - false*/
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isInsuranceEnabled;
     /** Является зарплатным клиентом банка - true, не является - false*/
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isSalaryClient;
 }

@@ -11,6 +11,7 @@ import ru.neoflex.Conveyor.dto.LoanOfferDTO;
 import java.util.List;
 
 /** Интерфейс, содержащий методы для работы ConveyorController*/
+
 @RequestMapping("/conveyor")
 public interface ConveyorAPI {
     @PostMapping("/offers")

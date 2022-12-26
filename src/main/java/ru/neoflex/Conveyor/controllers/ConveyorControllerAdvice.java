@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.neoflex.Conveyor.exception.IncorrectURLException;
-import ru.neoflex.Conveyor.exception.URLErrorResponse;
+import ru.neoflex.Conveyor.exception.ErrorResponse;
 
 import java.time.LocalDateTime;
 
@@ -17,13 +17,26 @@ import java.time.LocalDateTime;
 public class ConveyorControllerAdvice extends ResponseEntityExceptionHandler {
 
     /** Метод обработки искоючения при неверно указанном URL стороннего сервиса*/
-    @ExceptionHandler
-    public ResponseEntity<URLErrorResponse> handleException(IncorrectURLException e) {
+    @ExceptionHandler(IncorrectURLException.class)
+    public ResponseEntity<ErrorResponse> handleException(IncorrectURLException e) {
         log.error("Incorrect URL in property file");
-        URLErrorResponse urlErrorResponse = new URLErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 "Incorrect URL in property file",
-                LocalDateTime.now());
+                LocalDateTime.now()
+        );
 
-        return new ResponseEntity<>(urlErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /** Метод обработки всех исключений*/
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error(e.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

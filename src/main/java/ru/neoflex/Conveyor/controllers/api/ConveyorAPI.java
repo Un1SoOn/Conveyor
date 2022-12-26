@@ -10,10 +10,15 @@ import ru.neoflex.Conveyor.dto.LoanOfferDTO;
 
 import java.util.List;
 
+/** Интерфейс, содержащий методы для работы ConveyorController*/
+
 @RequestMapping("/conveyor")
 public interface ConveyorAPI {
     @PostMapping("/offers")
-    public List<LoanOfferDTO> offer(@RequestBody @Valid LoanApplicationRequestDTO applicationRequestDTO,
+    List<LoanOfferDTO> offer(@RequestBody @Valid LoanApplicationRequestDTO applicationRequestDTO,
                                     BindingResult bindingResult);
 
+
+    @PostMapping("/online-offer")
+    LoanOfferDTO onlineOffer();
 }

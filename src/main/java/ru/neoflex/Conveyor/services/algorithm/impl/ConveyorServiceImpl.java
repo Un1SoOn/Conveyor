@@ -20,6 +20,7 @@ public class ConveyorServiceImpl implements ConveyorService {
     /**Список, содержащий расчеты четырех предложений*/
     private final List<Algorithm> algorithmList;
 
+    /** Получение списка кредитных предложений*/
     public List<LoanOfferDTO> getAllOffers(LoanApplicationRequestDTO applicationRequestDTO,
                                            BindingResult bindingResult) {
 
